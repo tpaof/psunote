@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Edit Tag{% endblock %}
+{% block body %}
+
+<h3 class="my-2">Edit Tag</h3>
+<form action="" method="POST">
+  {{ form.hidden_tag() }}
+  <div class="form-group my-3">
+    {{ form.name.label }}
+    {{ form.name(class_='form-control') }}
+    {% for error in form.name.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
+  </div>
+  {{ form.submit(class_='btn btn-primary') }}
+  <a class="btn btn-secondary" href="{{ url_for('tags_view', tag_name=tag.name) }}">Cancel</a>
+</form>
+
+{% endblock %}
