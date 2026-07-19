@@ -20,8 +20,14 @@
       <br>
       Last update: {{ note.updated_date }}
     </div>
+    <div class="mt-3">
+      <a class="btn btn-warning" href="{{ url_for('notes_edit', note_id=note.id) }}">Edit</a>
+      <form class="d-inline" method="POST" action="{{ url_for('notes_delete', note_id=note.id) }}" onsubmit="return confirm('Delete this note?');">
+        {{ delete_form.hidden_tag() }}
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+    </div>
   </div>
 </div>
 {% endfor %}
 {% endblock %}
-
