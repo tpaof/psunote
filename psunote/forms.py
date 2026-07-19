@@ -1,6 +1,7 @@
 from wtforms_sqlalchemy.orm import model_form
 from flask_wtf import FlaskForm
-from wtforms import Field, widgets
+from wtforms import Field, StringField, SubmitField, widgets
+from wtforms.validators import DataRequired
 
 import models
 
@@ -16,7 +17,7 @@ class TagListField(Field):
     def process_formdata(self, valuelist):
         data = []
         if valuelist:
-            data = [x.strip() for x in valuelist[0].split(",")]
+            data = [x.strip() for x in valuelist[0].split(",") if x.strip()]
 
         if not self.remove_duplicates:
             self.data = data
@@ -35,9 +36,24 @@ class TagListField(Field):
 
 
 BaseNoteForm = model_form(
-    models.Note, base_class=FlaskForm, exclude=["created_date", "updated_date"]
+    models.Note,
+    base_class=FlaskForm,
+    exclude=["created_date", "updated_date", "tags"],
 )
 
 
 class NoteForm(BaseNoteForm):
     tags = TagListField("Tag")
+
+
+class TagForm(FlaskForm):
+    name = StringField(
+        "Tag",
+        filters=[lambda value: value.strip() if value else value],
+        validators=[DataRequired()],
+    )
+    submit = SubmitField("Save")
+
+
+class DeleteForm(FlaskForm):
+    submit = SubmitField("Delete")
