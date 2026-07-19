@@ -1,23 +1,29 @@
 {% extends 'base.html' %}
 {% block body %}
 
-<h3 class="my-2">Create Note</h3>
+<h3 class="my-2">{{ heading|default('Create Note') }}</h3>
 <form action="" method="POST">
   {{ form.hidden_tag() }}
   <div class="form-group my-3">
     {{ form.title.label }}
     {{ form.title(class_='form-control') }}
+    {% for error in form.title.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
   </div>
   <div class="form-group my-3">
     {{ form.description.label }}
     {{ form.description(class_='form-control', rows=10) }}
+    {% for error in form.description.errors %}
+      <div class="text-danger">{{ error }}</div>
+    {% endfor %}
   </div>
   <div class="form-group my-3">
     {{ form.tags.label }}
     {{ form.tags(class_='form-control') }}
   </div>
-  <button type="submit" class="btn btn-primary">Create</button>
+  <button type="submit" class="btn btn-primary">{{ submit_label|default('Create') }}</button>
+  <a class="btn btn-secondary" href="{{ url_for('index') }}">Cancel</a>
 </form>
 
 {% endblock %}
-
